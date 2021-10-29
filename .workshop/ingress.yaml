@@ -3,11 +3,11 @@ kind: Ingress
 metadata:
   name: spawner
   annotations:
-    homeroom/title: "Markdown Sample"
-    homeroom/description: "A sample workshop using Markdown."
+    homeroom/title: "Helm 101"
+    homeroom/description: "A workshop for learning basic concepts of Helm"
 spec:
   rules:
-  - host: "lab-markdown-sample.${CLUSTER_SUBDOMAIN}"
+  - host: "lab-helm-101.${CLUSTER_SUBDOMAIN}"
     http:
       paths:
       - path: "/"
