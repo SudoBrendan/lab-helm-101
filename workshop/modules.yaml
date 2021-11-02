@@ -1,12 +1,16 @@
 modules:
-    workshop-overview:
+    workshop-introduction:
         name: Workshop Overview
-        exit_sign: Setup Environment
-    setup-environment:
-        name: Setup Environment
+        exit_sign: Verify Environment
+    workshop-verify-environment:
+        name: Verify Environment
         exit_sign: Start Workshop
-    exercises/01-sample-content:
-        name: Sample Content
-    workshop-summary:
+    exercises/helm-introduction:
+        name: Helm Introduction
+    exercises/helm-cli:
+        name: Using the Helm CLI
+    exercises/helm-chart:
+        name: Introduction to Helm Charts
+    workshop-conclusion:
         name: Workshop Summary
         exit_sign: Finish Workshop

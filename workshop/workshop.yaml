@@ -2,7 +2,9 @@ name: Helm 101
 
 modules:
     activate:
-    - workshop-overview
-    - setup-environment
-    - exercises/01-sample-content
-    - workshop-summary
+    - workshop-introduction
+    - workshop-verify-environment
+    - exercises/helm-introduction
+    - exercises/helm-cli
+    - exercises/helm-chart
+    - workshop-conclusion
