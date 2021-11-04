@@ -89,7 +89,7 @@ While Helm can be a great way to share, render, and manage ***YAML documents*** 
 
 In this section you learned:
 
-1. The problems Helm attempts to solve (YAML lifecycle management), and those it doesn't (application/data lifecycle management)
+1. The problems Helm attempts to solve (YAML lifecycle management) and those it doesn't (application/data lifecycle management)
 1. The difference between Helm charts, values, and releases
 1. A brief history of Helm, and that you should be using Helm v3
 1. The architecture of Helm and how it fits into the Kubernetes/OpenShift ecosystem
