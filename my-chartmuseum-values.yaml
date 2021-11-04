@@ -1,4 +1,0 @@
-image:
-  repository: quay.io/bbergen/chartmuseum
-securityContext:
-  enabled: false
