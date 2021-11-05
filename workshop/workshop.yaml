@@ -6,5 +6,7 @@ modules:
     - workshop-verify-environment
     - exercises/helm-introduction
     - exercises/helm-cli
-    - exercises/helm-chart
+    - exercises/helm-chart-first
+    - exercises/helm-chart-fix
+    - exercises/helm-chart-add-route
     - workshop-conclusion

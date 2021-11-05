@@ -9,8 +9,12 @@ modules:
         name: Helm Introduction
     exercises/helm-cli:
         name: Using the Helm CLI
-    exercises/helm-chart:
+    exercises/helm-chart-first:
         name: Introduction to Helm Charts
+    exercises/helm-chart-fix:
+        name: Fixing a Chart to Work with OpenShift
+    exercises/helm-chart-add-route:
+        name: Adding Chart Features
     workshop-conclusion:
         name: Workshop Summary
         exit_sign: Finish Workshop

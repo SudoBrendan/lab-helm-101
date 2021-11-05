@@ -94,6 +94,6 @@ In this section you learned:
 1. A brief history of Helm, and that you should be using Helm v3
 1. The architecture of Helm and how it fits into the Kubernetes/OpenShift ecosystem
 
-## Up Next
+## Up next
 
 Next, you'll use `helm` to query and install open source charts into OpenShift

@@ -111,7 +111,7 @@ You can also query specific values using JSON paths:
 helm show values chartmuseum/chartmuseum --jsonpath='{.image.repository}:{.image.tag}{"\n"}'
 ```
 
-Everything you're looking at are the *default values* for this chart. If you want to override them, you need to tell Helm what you want changed. Given the error you saw, it looks like the user and filesystem permissions in the container image specified in the chart conflict with the Pod's `restricted` Security Context Contraints enforced by OpenShift. For this Workshop, we've custom-built a container image with correct permissions. To use it, create a custom values file and add the specific options you need to get Helm to use the image. While you're at it, disable some unneccesary security features OpenShift can better manage for you:
+Everything you're looking at are the *default values* for this chart. If you want to override them, you need to tell Helm what you want changed. Given the error you saw, it looks like the user and filesystem permissions in the container image specified in the chart conflict with the Pod's `restricted` Security Context Contraints enforced by OpenShift. For this Workshop, we've custom-built a container image with correct permissions. To use it, create a custom values file and add the specific options you need to get Helm to use the image. While you're at it, disable some unneccesary security features OpenShift can better manage for you, and set up authentication:
 
 ```execute-1
 cat > my-chartmuseum-values.yaml <<EOF
@@ -123,6 +123,11 @@ image:
 # disable the default security contexts set by the chart; let OpenShift do it's automatic (secure) thing!
 securityContext:
   enabled: false
+
+# set up configuration of the API for later...
+env:
+  open:
+    DISABLE_API: false
 EOF
 ```
 
@@ -247,6 +252,6 @@ In this section, you installed ChartMuseum to an OpenShift cluster through Helm 
 1. Installing a remote chart (`chartmuseum/chartmuseum`) to OpenShift with `helm install`
 1. Upgrading your release (`my-chartmuseum`) in OpenShift with custom values (`./my-chartmuseum-values.yaml`) with `helm upgrade`
 
-## Up Next
+## Up next
 
 Now that you've seen how to interact with open source Helm charts you can find online, you'll build your own chart from scratch!
