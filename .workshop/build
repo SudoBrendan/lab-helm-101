@@ -20,3 +20,12 @@ rm -f Dockerfile README.md LICENSE
 
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
+
+# Also, add colored diffs
+
+git config --global color.diff "auto"
+git config --global color.status "auto"
+git config --global color.branch "auto"
+git config --global color.interactive "auto"
+git config --global color.ui "true"
+git config --global color.pager "true"

@@ -52,6 +52,14 @@ route:
 EOF
 ```
 
+See the diff:
+
+```execute-1
+# add an "intent to add" for our new file, so we see the whole diff
+git add -N templates/route.yaml
+git diff
+```
+
 ### Step 2: Validate the updates
 
 Now you can check that the manifests all look OK with `helm lint`:
@@ -78,7 +86,12 @@ While a little cryptic, Helm is saying there's no YAML to display because you sp
 helm template . --set route.enabled=true --show-only templates/route.yaml
 ```
 
-Success! Our chart can render a Route manifest!
+Success! Your chart can render a Route manifest! Commit the change:
+
+```execute-1
+git add templates/route.yaml values.yaml
+git commit -m "Added support for Routes"
+```
 
 ### Step 3: Remove Ingress resources
 
@@ -122,6 +135,12 @@ Using either `vi` or `nano`, e.g.:
 nano templates/NOTES.txt
 ```
 
+Check out the complete diff:
+
+```execute-1
+git diff
+```
+
 ### Step 4: Validate again
 
 Just to be sure everything is valid, run `helm lint` again:
@@ -154,9 +173,18 @@ You can follow the instructions at the end of the install to get the Route URL a
 helm uninstall my-release
 ```
 
+Once this is done, commit the changes:
+
+```execute-1
+git add templates/NOTES.txt
+git add --all templates/ingress.yaml
+git add values.yaml
+git commit -m "Removing Ingress support"
+```
+
 ## Package and publish the new chart version
 
-Our chart is stable again! Cut and publish a release.
+Your chart is stable again! Cut and publish a release.
 
 ### Step 1: Bump the version number
 
@@ -164,6 +192,19 @@ Before you package this chart, you should bump the version number:
 
 ```execute-1
 yq eval --inplace '.version = "0.2.0"' Chart.yaml
+```
+
+See what changed:
+
+```execute-1
+git diff
+```
+
+Then commit:
+
+```execute-1
+git add Chart.yaml
+git commit -m "Cutting a new release 0.2.0"
 ```
 
 ### Step 2: Package the chart
@@ -210,10 +251,19 @@ Once you're done exploring the install, uninstall the release:
 helm uninstall my-release
 ```
 
+Finally, remove the local package:
+
+```execute-1
+rm my-chart-0.2.0.tgz
+```
+
 ## Summary
 
-TODO
+In this lesson, you solidified your understanding of developing Helm charts by:
+
+1. Adding support for additional resources in your chart
+1. Going through the process of pushing an updated version of a chart to your Helm repository
 
 ## Up next
 
-TODO
+In the next lesson, you'll review the content of the course and get access to a curated list of other online resources to explore Helm further.

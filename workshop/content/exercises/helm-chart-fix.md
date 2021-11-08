@@ -1,6 +1,18 @@
 
 Now that you're a little more familiar with Helm chart structure, you'll modify the chart you made to make it work out-of-box in OpenShift. You'll also learn how to package and publish your feature-complete chart.
 
+## Capture your starting point
+
+For the purpose of showing exactly what files have changed over time and in what ways, you'll use `git` to track your progress locally. To start, capture your original broken chart with a commit:
+
+```execute-1
+cd ~/charts
+git init
+git add my-chart
+git commit -m "Initial output of helm create"
+cd ~/charts/my-chart
+```
+
 ## Modify the chart
 
 The default chart you generated in the last lesson has a few issues when deploying in OpenShift. In this section you'll fix the chart.
@@ -20,6 +32,12 @@ cat >> values.yaml <<EOF
 deployment:
   httpContainerPort: 80
 EOF
+```
+
+To see these changes easier, use `git diff`:
+
+```execute-1
+git diff
 ```
 
 Whenever you make a change to a Helm chart, you should make sure everything still works with `helm lint`:
@@ -42,11 +60,16 @@ helm template . --set deployment.httpContainerPort=9999 --show-only templates/de
 
 > NOTE: recognize you used `deployment` instead of `.deployment` when using `--set`.
 
-If the Deployment you see now uses port `9999`, you know the changes worked like you expect!
+If the Deployment you see now uses port `9999`, you know the changes worked like you expect! Commit this change:
+
+```execute-1
+git add templates/deployment.yaml values.yaml
+git commit -m "Parameterized deployment http port number"
+```
 
 ### Step 2: Fix default container
 
-Next, we saw in the last lesson that the default container for the chart doesn't work with OpenShift's `restricted` SCCs. Setting a default container that works will make the chart easier to get started with. To do this, update `values.yaml` with a new default image and tag:
+Next, you saw in the last lesson that the default container for the chart doesn't work with OpenShift's `restricted` SCCs. Setting a default container that works will make the chart easier to get started with. To do this, update `values.yaml` with a new default image and tag:
 
 ```execute-1
 yq eval --inplace '.image.repository = "quay.io/bbergen/nginx"' values.yaml
@@ -65,6 +88,14 @@ yq eval --inplace '.deployment.httpContainerPort = 8080' values.yaml
 yq eval --inplace '.service.port = 8080' values.yaml
 ```
 
+Check all these changes with `git diff`:
+
+```execute-1
+git diff
+```
+
+> NOTE: navigating a large diff is similar to `less`, use up/down arrows or "j"/"k" keys. You can exit with "q".
+
 Make sure linting still passes:
 
 ```execute-1
@@ -76,6 +107,13 @@ Verify the YAML uses the new default image, tag, and ports:
 ```execute-1
 # -s is short for --show-only
 helm template . -s templates/deployment.yaml -s templates/service.yaml
+```
+
+Then, commit the change:
+
+```execute-1
+git add values.yaml
+git commit -m "Updated default container and ports"
 ```
 
 ### Step 3: Validate the changes
@@ -182,10 +220,22 @@ If this works, your chart was published successfully! Feel free to test out the 
 helm uninstall my-release
 ```
 
+Finally, clean up the local package:
+
+```execute-1
+rm my-chart-0.1.0.tgz
+```
+
 ## Summary
 
-TODO
+In this lesson, you learned the basics of:
+
+1. how to modify Helm charts by:
+  - modifying `template/` files and `values.yaml`
+  - verify changes with `helm lint` and `helm template`
+1. how to package charts into versioned artifacts
+1. how to publish charts to a private Helm repository
 
 ## Up next
 
-TODO
+In the next lesson you'll continue to modify your chart by adding additional features.

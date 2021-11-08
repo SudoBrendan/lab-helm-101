@@ -111,7 +111,7 @@ You can also query specific values using JSON paths:
 helm show values chartmuseum/chartmuseum --jsonpath='{.image.repository}:{.image.tag}{"\n"}'
 ```
 
-Everything you're looking at are the *default values* for this chart. If you want to override them, you need to tell Helm what you want changed. Given the error you saw, it looks like the user and filesystem permissions in the container image specified in the chart conflict with the Pod's `restricted` Security Context Contraints enforced by OpenShift. For this Workshop, we've custom-built a container image with correct permissions. To use it, create a custom values file and add the specific options you need to get Helm to use the image. While you're at it, disable some unneccesary security features OpenShift can better manage for you, and set up authentication:
+Everything you're looking at are the *default values* for this chart. If you want to override them, you need to tell Helm what you want changed. Given the error you saw, it looks like the user and filesystem permissions in the container image specified in the chart conflict with the Pod's `restricted` Security Context Contraints enforced by OpenShift. For this Workshop, a custom-built container image with correct permissions has been built and published. To use it, create a custom values file and add the specific options you need to get Helm to use the image. While you're at it, disable some unneccesary security features OpenShift can better manage for you, and enable the API (used later in the workshop):
 
 ```execute-1
 cat > my-chartmuseum-values.yaml <<EOF

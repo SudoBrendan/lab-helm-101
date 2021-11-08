@@ -6,6 +6,8 @@ Helm charts are the way to bundle up YAML, templatize it, version it, and add de
 `helm` exposes a command to build scaffolding for new charts that bake-in best practices and syntax:
 
 ```execute-1
+mkdir ~/charts
+cd ~/charts
 helm create my-chart
 ```
 
@@ -20,7 +22,7 @@ tree my-chart
 Below, you'll dive a bit deeper on each file, so change directories there for a while:
 
 ```execute-1
-pushd my-chart
+cd ~/charts/my-chart
 ```
 
 ### Chart.yaml
@@ -82,11 +84,11 @@ This directory contains the meat and potatoes of a chart: the templates used to 
 ls templates
 ```
 
-Files that start with `_` are not rendered as YAML, but serve other purposes. All other files are templates that should generate YAML documents Kubernetes can understand and process.
+`NOTES.txt` and all files that start with `_` are not rendered as YAML, but serve other purposes. All other files are templates that should generate YAML documents Kubernetes can understand and process.
 
 #### YAML templates
 
-Files that aren't in the exception list are all considered YAML templates that should be sent to Kubernetes when we create/modify a release (the `*.yaml` extension is only for clarity). To dive a bit deeper into a specific template, look at `deployment.yaml`:
+Files that aren't in the exception list are all considered YAML templates that should be sent to Kubernetes when you create/modify a release (the `*.yaml` extension is only for clarity). To dive a bit deeper into a specific template, look at `deployment.yaml`:
 
 ```execute-1
 less -N templates/deployment.yaml
@@ -122,7 +124,7 @@ q
 Change the default value of the chart to see this take effect in the resulting rendered YAML:
 
 ```execute-1
-yq eval '.replicaCount = 2' values.yaml
+yq eval --inplace '.replicaCount = 2' values.yaml
 helm template . --show-only templates/deployment.yaml | less -N
 ```
 
@@ -134,13 +136,19 @@ Exit `less`:
 q
 ```
 
+Go ahead and change back the default replicaCount:
+
+```execute-1
+yq eval --inplace '.replicaCount = 1' values.yaml
+```
+
 If desired, you can check out the other YAML templates in `templates/` as well (`hpa.yaml`, `ingress.yaml`, etc).
 
 #### _helpers.tpl
 
 You may have noticed on line 4 of `templates/deployment.yaml` that the chart injects information from a `"my-chart.fullname"` object. This object is defined in `_helpers.tpl`.
 
-As mentioned before, files starting with `_` don't generate YAML. This file defines a few helper functions we can use throughout the rest of the chart's templates. Take a look:
+As mentioned before, files starting with `_` don't generate YAML. This file defines a few helper functions you can use throughout the rest of the chart's templates. Take a look:
 
 ```execute-1
 less -N templates/_helpers.tpl
@@ -162,7 +170,9 @@ q
 less -N templates/NOTES.txt
 ```
 
-Exit `less`:
+Since your chart currently installs a web application, the notes tell a user how to get the URL for the app they just created.
+
+When you're done, exit `less`:
 
 ```execute-1
 q
@@ -170,19 +180,21 @@ q
 
 #### tests/
 
-The `tests` directory is here for convention, and has more YAML files, but these are generally short-lived Jobs or Pods that merely execute to completion to verify that the application came up as expected:
+The `tests` directory is here for convention, and has more YAML files, but these are generally short-lived Jobs or Pods that execute to completion to verify that the application came up as expected:
 
 ```execute-1
 less -N templates/tests/test-connection.yaml
 ```
 
-While this Pod lives in `test/` by convention, what really makes this Pod a "test" to Helm is the annotation `"helm.sh/hook": test`. You'll notice your Helm release is marked successful if `wget` returns a response when hitting our Service.
+While this Pod lives in `test/` by convention, what really makes this Pod a "test" to Helm is the annotation `"helm.sh/hook": test`. You'll notice your Helm release is marked successful if `wget` returns a response when hitting your Service. More generally, test pods that exit `0` are considered successful, and mean a Helm release is also successful. Any non-zero exit status will be reflected in Helm as a failed release.
 
 Exit `less`:
 
 ```execute-1
 q
 ```
+
+> NOTE: `helm install --atomic` and `helm upgrade --atomic` work really well when you configure tests! Check out `helm install -h` and `helm upgrade -h` for more information.
 
 ## Deploy a release from your local chart
 
@@ -198,7 +210,7 @@ Then check on the resources:
 oc get all -l app.kubernetes.io/instance=my-release
 ```
 
-> QUIZ: Why was the label `app.kubernetes.io/instance` used to select our chart's resources? Where is that label defined?
+> QUIZ: Why was the label `app.kubernetes.io/instance` used to select your release's resources? Where is that label defined?
 > 
 > <details><summary>Answer</summary>
 > This label is added to all (well, most) resources in the chart through the `"my-chart.labels"` function in `templates/_helpers.tpl`, which includes all the labels generated by the function `"my-chart.selectorLabels"` also defined in `templates/_helpers.tpl`.
