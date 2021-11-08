@@ -1,5 +1,5 @@
 WORKSHOP_NAME=lab-helm-101
-WORKSHOP_IMAGE=quay.io/bbergen/lab-helm-101:0.1
+WORKSHOP_IMAGE=quay.io/bbergen/lab-helm-101:1.0.0-a1
 WORKSHOP_TITLE="Helm 101"
 WORKSHOP_DESCRIPTION="A workshop to introduce Helm basic concepts"
 RESOURCE_BUDGET=medium
