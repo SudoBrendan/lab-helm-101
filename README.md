@@ -8,7 +8,12 @@
 
 ## Overview
 
-A workshop that introduces the basic concepts of Helm in OpenShift.
+| -- | -- |
+| Audience Experience Level | Advanced |
+| Supported Number of Users | 100 (on-demand) |
+| Average Time to Complete | 90 minutes |
+
+A workshop that introduces the basic concepts of Helm in OpenShift. A decent understanding of OpenShift/Kubernetes and primitives (Pods/Services/Deployments/etc) is required.
 
 ## Deploying the Workshop
 
@@ -57,7 +62,7 @@ Want to make a change to this workshop? Excellent! If you're new to workshops, y
 
 ### Pull
 
-To make changes to this workhop, pull the repository and submodules
+To make changes to this workshop, pull the repository and submodules
 
 ```sh
 git clone --recurse-submodules <this repo url>
@@ -78,7 +83,7 @@ oc new-project my-workshop-demo
 oc get route
 ```
 
-Dev auth settings can be found in `.workshop/develop-settings.sh`.
+Dev authentication settings can be found in `.workshop/develop-settings.sh`.
 
 Once you make a local change in the workshop, you can build your local changes into a new image using OpenShift:
 
@@ -90,6 +95,17 @@ Once you make a local change in the workshop, you can build your local changes i
 oc rollout status dc/lab-helm-101
 
 # refresh the route page in your browser
+```
+
+### Spellcheck
+
+It's easy to misspell words in markdown. I use `aspell` to validate before pushing:
+
+```sh
+find ./workshop/content/markdown -iname '*.md' -exec aspell --master=en_US --lang=en_US -c {} \;
+
+# for the bold, or if you issue a commit before
+find ./workshop/content/markdown -iname '*.md' -exec aspell --master=en_US --lang=en_US --dont-backup -c {} \;
 ```
 
 ### Publish New Workshop Image

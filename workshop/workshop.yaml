@@ -2,11 +2,11 @@ name: Helm 101
 
 modules:
     activate:
-    - workshop-introduction
-    - workshop-verify-environment
-    - exercises/helm-introduction
-    - exercises/helm-cli
-    - exercises/helm-chart-first
-    - exercises/helm-chart-fix
-    - exercises/helm-chart-add-route
-    - workshop-conclusion
+    - markdown/workshop-introduction
+    - markdown/workshop-verify-environment
+    - markdown/exercises/helm-introduction
+    - markdown/exercises/helm-cli
+    - markdown/exercises/helm-chart-first
+    - markdown/exercises/helm-chart-fix
+    - markdown/exercises/helm-chart-add-route
+    - markdown/workshop-conclusion

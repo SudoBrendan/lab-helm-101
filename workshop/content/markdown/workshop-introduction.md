@@ -8,7 +8,7 @@ In this workshop, you'll:
 1. Use the `helm` CLI to:
     - Query open source Helm charts online
     - Install Helm charts and their dependencies
-    - Manage Helm YAML lifecycles in OpenShift, including installing, upgrading, and uninstalling
+    - Manage Helm YAML life cycles in OpenShift, including installing, upgrading, and uninstalling
 1. Familiarize yourself with Helm charts by:
     - Building a Helm chart from scratch
     - Making edits to a Helm chart

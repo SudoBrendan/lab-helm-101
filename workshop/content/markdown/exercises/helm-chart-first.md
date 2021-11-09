@@ -37,7 +37,7 @@ less Chart.yaml
 
 You'll notice the following fields:
 
-- `apiVersion`: the Helm api version this chart conforms to (confusingly, "v2" means Helm 3.x compatible).
+- `apiVersion`: the Helm API version this chart conforms to (confusingly, "v2" means Helm 3.x compatible).
 - `name`: the name of the chart.
 - `description`: description of the chart.
 - `type`: either "application" or "library". Application charts can be deployed to Kubernetes because they generate YAML. Library charts can provide templating functions or other information (maybe even just values to be exposed...), and cannot be `helm installed` by themselves.
@@ -48,11 +48,9 @@ There are other fields not present in this default file, but one really importan
 
 - `dependencies`: a map of dependencies of this chart (other charts) and their versions - for example, you might put a PostgreSQL chart as a dependency of a web app.
 
-When you're done reading through the file, exit `less`:
+When you're done reading through the file, exit `less`.
 
-```execute-1
-q
-```
+> NOTE: You can exit less by pressing the "q" key
 
 ### values.yaml
 
@@ -62,11 +60,7 @@ This is the API into the chart and its defaults. Generally, you'll want to inclu
 less values.yaml
 ```
 
-Take a few minutes to figure see what parameters are available in this chart, then exit `less`:
-
-```execute-1
-q
-```
+Take a few minutes to figure see what parameters are available in this chart, then exit `less`.
 
 ### charts/
 
@@ -99,15 +93,17 @@ Templates in Helm charts use a combination of two different syntaxes:
 1. [golang templating](https://pkg.go.dev/text/template), and
 1. [sprig functions](https://masterminds.github.io/sprig/)
 
-You can see golang templating everywhere in the file with the `{{ something }}`, `{{- something }}`, and `{{- something -}}` syntaxes (the `-` characters denote if you want to trim leading/trailing whitespace). On line 9, you can see how charts use `values.yaml` to inject information into a template through the `.Values` global object. `.Chart` and `.Release` objects are also available to access additional metadata. Remember when developing templates that YAML syntax relies heavily on whitespace characters, so "  {{ .Values.image.repository }}" is different from "{{ .Values.image.repository }}". The `nindent` sprig function is sometimes used to set a particular whitepsace prefix.
+Notice how this is realized in the template file:
 
-Take a few minutes to investigate this file and see how information from `Chart.yaml`, release metadata, and `values.yaml` information is injected into the Deployment object, then exit `less`:
+- The `{{ something }}`, `{{- something }}`, and `{{- something -}}` syntaxes inject information into the template (the `-` characters denote if you want to trim leading/trailing whitespace)
+- On line 9, you can see how charts use `values.yaml` to inject information into a template through the `.Values` global object.
+- On line 31, you see an injection from `Chart.yaml` via `.Chart` (also note properties are capitalized here)
+- While not visible, `.Release` also exists, and can inject information about the release (it's name, the Namespace, etc)
+- Whitespace matters in YAML, so it matters in the template. Some templating includes whitespace (e.g. "  {{ .Values.image.repository }}), and some use sprig to generate it (e.g. "{{ .Values.image.repository }} | nindent 2" )
 
-```execute-1
-q
-```
+Take a few minutes to investigate this file, then exit `less`.
 
-`helm template` can be used during chart development to see how changes affect resulting YAML, see it in action:
+`helm template` can be used during chart development to see how changes affect resulting YAML:
 
 ```execute-1
 helm template . --show-only templates/deployment.yaml | less -N
@@ -115,11 +111,7 @@ helm template . --show-only templates/deployment.yaml | less -N
 
 You'll notice `RELEASE-NAME` shows up a few times as a placeholder. On line 14, you see the default replicas from `values.yaml` made it into the YAML!
 
-Exit `less`:
-
-```execute-1
-q
-```
+Exit `less`.
 
 Change the default value of the chart to see this take effect in the resulting rendered YAML:
 
@@ -130,11 +122,7 @@ helm template . --show-only templates/deployment.yaml | less -N
 
 Alternatively, instead of changing the default value for _all_ releases of this chart, you can use a custom values file for a specific release.
 
-Exit `less`:
-
-```execute-1
-q
-```
+Exit `less`.
 
 Go ahead and change back the default replicaCount:
 
@@ -156,11 +144,7 @@ less -N templates/_helpers.tpl
 
 Functions can be created using the `define` keyword. As a best practice, functions in a chart should be namespaced with the chart's name, so here you see function names like `"my-chart.fullname"` (line 13) instead of `"fullname"`. This makes name collisions less likely when implementing dependencies in charts. As you may have noticed, the functions you can write are very powerful - ranging from concatenating strings, to generating whole chunks of YAML that are reused multiple times by different manifests.
 
-Exit `less`:
-
-```execute-1
-q
-```
+Exit `less`.
 
 #### Notes.txt
 
@@ -172,11 +156,7 @@ less -N templates/NOTES.txt
 
 Since your chart currently installs a web application, the notes tell a user how to get the URL for the app they just created.
 
-When you're done, exit `less`:
-
-```execute-1
-q
-```
+When you're done, exit `less`.
 
 #### tests/
 
@@ -188,11 +168,7 @@ less -N templates/tests/test-connection.yaml
 
 While this Pod lives in `test/` by convention, what really makes this Pod a "test" to Helm is the annotation `"helm.sh/hook": test`. You'll notice your Helm release is marked successful if `wget` returns a response when hitting your Service. More generally, test pods that exit `0` are considered successful, and mean a Helm release is also successful. Any non-zero exit status will be reflected in Helm as a failed release.
 
-Exit `less`:
-
-```execute-1
-q
-```
+Exit `less`.
 
 > NOTE: `helm install --atomic` and `helm upgrade --atomic` work really well when you configure tests! Check out `helm install -h` and `helm upgrade -h` for more information.
 
@@ -207,7 +183,7 @@ helm install my-release .
 Then check on the resources:
 
 ```execute-1
-oc get all -l app.kubernetes.io/instance=my-release
+watch oc get all -l app.kubernetes.io/instance=my-release
 ```
 
 > QUIZ: Why was the label `app.kubernetes.io/instance` used to select your release's resources? Where is that label defined?
@@ -219,6 +195,7 @@ oc get all -l app.kubernetes.io/instance=my-release
 You'll notice the Pods are in a crash loop, similarly to ChartMuseum, because the default image defined in your chart (`nginx`) doesn't pass the minimum security requirements of OpenShift. You'll fix this in the next lesson. For now, uninstall the release:
 
 ```execute-1
+<ctrl-c>
 helm uninstall my-release
 ```
 

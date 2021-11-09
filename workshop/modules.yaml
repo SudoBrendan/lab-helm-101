@@ -1,20 +1,20 @@
 modules:
-    workshop-introduction:
+    markdown/workshop-introduction:
         name: Workshop Overview
         exit_sign: Verify Environment
-    workshop-verify-environment:
+    markdown/workshop-verify-environment:
         name: Verify Environment
         exit_sign: Start Workshop
-    exercises/helm-introduction:
+    markdown/exercises/helm-introduction:
         name: Helm Introduction
-    exercises/helm-cli:
+    markdown/exercises/helm-cli:
         name: Using the Helm CLI
-    exercises/helm-chart-first:
+    markdown/exercises/helm-chart-first:
         name: Introduction to Helm Charts
-    exercises/helm-chart-fix:
+    markdown/exercises/helm-chart-fix:
         name: Fixing a Chart to Work with OpenShift
-    exercises/helm-chart-add-route:
+    markdown/exercises/helm-chart-add-route:
         name: Adding Chart Features
-    workshop-conclusion:
+    markdown/workshop-conclusion:
         name: Workshop Summary
         exit_sign: Finish Workshop

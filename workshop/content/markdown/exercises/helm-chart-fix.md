@@ -46,7 +46,7 @@ Whenever you make a change to a Helm chart, you should make sure everything stil
 helm lint .
 ```
 
-You should see something like `0 chart(s) failed`. If linting passes, Helm doesn't see any issues with rendering YAML - however, this doesn't mean that the YAML will be acceptable to a Kubernetes cluster (it could still have syntax issues - like not having all the required fields, etc). You can do a manual verification that the YAML looks like you expect with `helm template`:
+You should see something like `0 chart(s) failed`. If linting passes, Helm doesn't see any issues with rendering YAML - however, this doesn't mean that the YAML will be acceptable to a Kubernetes cluster (it could still have syntax issues - like not having all the required fields, improper whitespace, etc). You can do a manual verification that the YAML looks like you expect with `helm template`:
 
 ```execute-1
 helm template . --show-only templates/deployment.yaml
@@ -127,10 +127,16 @@ helm install my-release .
 Then look at the resources created by the release:
 
 ```execute-1
-oc get all -l app.kubernetes.io/instance=my-release
+watch oc get all -l app.kubernetes.io/instance=my-release
 ```
 
-You should now have containers that don't crashloop! Create a proxy to test:
+You'll notice the Pods no longer crash! Once all Pods show READY, exit `watch`:
+
+```execute-1
+<ctrl-c>
+```
+
+Create a proxy to test:
 
 ```execute-2
 oc port-forward svc/my-release-my-chart 8080:8080
@@ -188,7 +194,7 @@ To start, install the [Helm plugin for ChartMuseum](https://github.com/chartmuse
 helm plugin install https://github.com/chartmuseum/helm-push.git
 ```
 
-Next, add ChartMuseum to your repositires:
+Next, add ChartMuseum to your repositories:
 
 ```execute-1
 helm repo add my-chartmuseum http://localhost:8080

@@ -12,9 +12,9 @@ There are thousands of open source charts available online. You can use the CLI 
 helm search hub "chartmuseum" -o yaml
 ```
 
-The query will return a few results. When you use the `hub` subcommand, you're querying [artifacthub.io](https://artifacthub.io), a Helm-maintained list of repositories and charts in the open source community.
+The query will return a few results. When you use the `hub` subcommand, you're querying [Artifact Hub](https://artifacthub.io), a Helm-maintained list of repositories and charts in the open source community.
 
-In this list, you should see a chart with the url `https://artifacthub.io/packages/helm/chartmuseum/chartmuseum` (versions may vary):
+In this list, you should see a chart with the URL `https://artifacthub.io/packages/helm/chartmuseum/chartmuseum` (versions may vary):
 
 ```text
 {...OUTPUT OMITTED...}
@@ -111,7 +111,7 @@ You can also query specific values using JSON paths:
 helm show values chartmuseum/chartmuseum --jsonpath='{.image.repository}:{.image.tag}{"\n"}'
 ```
 
-Everything you're looking at are the *default values* for this chart. If you want to override them, you need to tell Helm what you want changed. Given the error you saw, it looks like the user and filesystem permissions in the container image specified in the chart conflict with the Pod's `restricted` Security Context Contraints enforced by OpenShift. For this Workshop, a custom-built container image with correct permissions has been built and published. To use it, create a custom values file and add the specific options you need to get Helm to use the image. While you're at it, disable some unneccesary security features OpenShift can better manage for you, and enable the API (used later in the workshop):
+Everything you're looking at are the *default values* for this chart. If you want to override them, you need to tell Helm what you want changed. Given the error you saw, it looks like the user and filesystem permissions in the container image specified in the chart conflict with the Pod's `restricted` Security Context Constraints enforced by OpenShift. For this Workshop, a custom-built container image with correct permissions has been built and published. To use it, create a custom values file and add the specific options you need to get Helm to use the image. While you're at it, disable some unnecessary security features OpenShift can better manage for you, and enable the API (used later in the workshop):
 
 ```execute-1
 cat > my-chartmuseum-values.yaml <<EOF
@@ -131,7 +131,7 @@ env:
 EOF
 ```
 
-You may have noticed that your custom values file didn't specify *all* the values available, only the ones you want to *change from the defaults*. When you use this custom values file, Helm will strategicly merge in the default values with your custom ones.
+You may have noticed that your custom values file didn't specify *all* the values available, only the ones you want to *change from the defaults*. When you use this custom values file, Helm will strategically merge in the default values with your custom ones.
 
 To make this explicit - look at the exact YAML you expect to change in your Deployment when you upgrade the chart:
 
@@ -213,17 +213,20 @@ helm status my-chartmuseum
 ```execute-1
 # print the YAML
 helm get manifest my-chartmuseum
+```
 
+```execute-1
 # display the values used
 helm get values my-chartmuseum
+```
 
+```execute-1
 # or other information
 helm get --help
 ```
 
-...or view a history of release revisions:
-
 ```execute-1
+# view history of releases
 helm history my-chartmuseum
 ```
 
@@ -237,12 +240,12 @@ Alright - reflect on what just happened:
 1. You hit a wall because the security setup of the chart's default container wasn't compatible with OpenShift
 1. You fixed the issue by setting custom values
 
-You may be wondering: "Does Red hat support this ChatMuseum app I just installed?" - the answer is "No", just like Red Hat doesn't support upstream bits for any other open source projects. Ultimately, if you decide to keep this chart installed, you'll be soley responsible for:
+You may be wondering: "Does Red hat support this ChatMuseum app I just installed?" - the answer is "No", just like Red Hat doesn't support upstream bits for any other open source projects. Ultimately, if you decide to keep this chart installed, you'll be solely responsible for:
 
 1. Understanding exactly what's in the chart and deploying upgrades over time to the chart/release in OpenShift
-1. Understanding how to maintain day 1 and day 2 operations of the acutal appliation deployed by the chart's YAML, including security, configuration, data disaster recovery, etc
+1. Understanding how to maintain day 1 and day 2 operations of the actual application deployed by the chart's YAML, including security, configuration, data disaster recovery, etc
 
-Now, you happened to solve some of those problems in this lab, but as with any other upstream project, constantly changing bits can be difficult to maintain over time. **However**, Helm still gave you something incredibly valuable! You were able to test out a new application you knew nearly nothing about by deploying it into your environment in about 3 commands - what other application platform does that? The answer is none - this is a uniquely Helm/Kubernetes value-add. While you may want to eventually purchase a production grade and enterprise ready Helm repository (of course, we'll recommend Quay for its excellent integrations with OpenShift - it supports hosting Helm charts as of v3.6!), you could POC it for yourself to figure out if "this Helm thing" is even worth your time. The same goes for thousands of other applications you can find in Artifact Hub. POCs with zero commitment for security tools, networking, dashboarding, databases, caches, application frameworks, and yes, even Minecraft servers are all a few `helm` commands away instead of taking months or even years to complete.
+**However**, Helm still gave you something incredibly valuable! You were able to test out a new application you knew nearly nothing about by deploying it into your environment in a few commands; this marketplace is a uniquely Helm/Kubernetes value-add. While you may want to eventually purchase a production grade and enterprise ready Helm repository (of course, we'll recommend **Quay** for its excellent integration with OpenShift), you could POC it for yourself to figure out if "this Helm repository thing" is even worth your time. The same goes for thousands of other applications you can find in Artifact Hub - you can POC them in minutes instead of weeks or months.
 
 ## Summary
 
