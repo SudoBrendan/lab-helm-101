@@ -8,7 +8,6 @@
 
 ## Overview
 
-| -- | -- |
 | Audience Experience Level | Advanced |
 | Supported Number of Users | 100 (on-demand) |
 | Average Time to Complete | 90 minutes |
