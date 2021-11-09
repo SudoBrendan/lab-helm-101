@@ -40,6 +40,8 @@ To see these changes easier, use `git diff`:
 git diff
 ```
 
+> NOTE: navigating a large diff is similar to `less`, use up/down arrows or "j"/"k" keys. You can exit with "q".
+
 Whenever you make a change to a Helm chart, you should make sure everything still works with `helm lint`:
 
 ```execute-1
@@ -93,8 +95,6 @@ Check all these changes with `git diff`:
 ```execute-1
 git diff
 ```
-
-> NOTE: navigating a large diff is similar to `less`, use up/down arrows or "j"/"k" keys. You can exit with "q".
 
 Make sure linting still passes:
 

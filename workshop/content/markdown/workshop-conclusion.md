@@ -25,6 +25,6 @@ While we hope this workshop was helpful in giving a hands-on experience with Hel
 
 ## Closing
 
-At Red Hat, we believe Open unlocks the world's potential - and that applies here too. If you have any feedback on this workshop, please share it with your Red Hat representative. You can also review this lab content at any time, it's completely [open source](https://github.com/SudoBrendan/lab-helm-101/workshop/content)!
+At Red Hat, we believe Open unlocks the world's potential - and that applies here too. If you have any feedback on this workshop, please share it with your Red Hat representative. You can also review this lab content at any time, it's completely [open source](https://github.com/SudoBrendan/lab-helm-101/tree/master/workshop)!
 
 Feel free to keep this page open and explore the resources above or play around with `helm` in the terminal. Alternatively, click `Finish Workshop` below to tear down your lab environment.
